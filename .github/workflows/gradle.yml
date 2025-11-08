@@ -4,9 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -19,11 +17,5 @@ jobs:
       - name: Start SUT
         run: |
           java -jar ./artifacts/app-order.jar &
-          # Wait for SUT to start (check every 5 seconds, timeout 60 seconds)
-          while ! curl -s http://localhost:9999 > /dev/null; do
-            echo "Waiting for SUT to start..."
-            sleep 5
-          done
-          echo "SUT is up and running!"
       - name: Build with Gradle
-        run: ./gradlew test -Dselenide.headless=true --info # Укажите -Dselenide.headless=true, только если нужно явно
+        run: ./gradlew test -Dselenide.headless=true --info
