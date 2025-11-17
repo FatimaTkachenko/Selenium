@@ -5,12 +5,12 @@ plugins {
 group 'ru.netology'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 11
-
-// Настройка кодировки файлов
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+java {
+    sourceCompatibility = 11
 }
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
@@ -20,10 +20,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.29.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.3'
-    testImplementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.29.0' // Добавлено в dependencies
 }
-
 test {
     useJUnitPlatform()
-    // Вместо systemProperty, лучше передавать аргументы в коде Selenium
+    systemProperty 'chromeoptions.prefs', System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
 }

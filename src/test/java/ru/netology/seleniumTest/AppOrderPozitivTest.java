@@ -1,30 +1,36 @@
-package ru.netology.seleniumTest;
+package ru.netology;
 
-import org.junit.jupiter.api.BeforeAll;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import io.github.bonigarcia.wdm.WebDriverManager;
-
-import java.time.Duration;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppOrderPozitivTest {
 
-    @BeforeAll
-    public static void setupAll() {
+    private WebDriver driver;
+
+    @BeforeEach
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--profile-password-manager-leak-detection=false");
+        driver = new ChromeDriver(options);
     }
 
     @Test
-    public void testOrderForm() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--no-sandbox");
-        WebDriver driver = new ChromeDriver(options);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public void testExample() {
+        driver.get("https://example.com");
+        System.out.println(driver.getTitle());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
