@@ -1,26 +1,29 @@
-name: Java CI
+name: Java CI с Gradle
 
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  build:
+
+  runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 11
-        uses: actions/setup-java@v4
+    - uses: actions/checkout@v2
+    - name: Настройка JDK 11
+        uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
-          java-version: '11'
-      - name: Run app in background
-        run: |
-          nohup java -jar ./artifacts/app-order.jar &
-          sleep 10  # Ждем запуска приложения
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Run tests with headless
-        run: |
-          ./gradlew test -Dchromeoptions.prefs=profile.password_manager_leak_detection=false
-        env:
-          HEADLESS: true
+  версия Java: '11'
+    дистрибутив: 'adopt'
+  — название: предоставить разрешение на выполнение для gradlew
+    запуск: chmod +x gradlew
+    - name: Запустить SUT
+        # Запускаем SUT,
+        # имя файла SUT будет отличаться в каждой задаче.
+        # & означает, что в фоновом режиме терминал не блокируется для запуска тестов,
+        # обязательно для запуска SUT в CI
+        run: java -jar ./artifacts/app-mbank.jar &
+    - имя: Сборка с помощью Gradle
+        # Запускаем автотесты
+        # Для проектов на базе Selenide необходимо добавить параметр для запуска браузера
+        # в режиме без головы -Dselenide.headless=true, параметр --info должен остаться
+        запуск: ./gradlew test --info
