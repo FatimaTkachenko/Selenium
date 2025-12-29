@@ -1,29 +1,21 @@
-name: Java CI с Gradle
+name: Java CI
 
 on: [push, pull_request]
 
 jobs:
-  build:
-
-  runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Настройка JDK 11
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
         with:
-  версия Java: '11'
-    дистрибутив: 'adopt'
-  — название: предоставить разрешение на выполнение для gradlew
-    запуск: chmod +x gradlew
-    - name: Запустить SUT
-        # Запускаем SUT,
-        # имя файла SUT будет отличаться в каждой задаче.
-        # & означает, что в фоновом режиме терминал не блокируется для запуска тестов,
-        # обязательно для запуска SUT в CI
-        run: java -jar ./artifacts/app-mbank.jar &
-    - имя: Сборка с помощью Gradle
-        # Запускаем автотесты
-        # Для проектов на базе Selenide необходимо добавить параметр для запуска браузера
-        # в режиме без головы -Dselenide.headless=true, параметр --info должен остаться
-        запуск: ./gradlew test --info
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Run app in background
+        run: |
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run tests with headless
+        run: |
