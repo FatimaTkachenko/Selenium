@@ -8,14 +8,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Run app in background
-        run: |
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Run tests with headless
+
+      - name: Start test service
         run: |
+          mkdir -p artifacts
+          wget -O artifacts/app-order.jar https://github.com/levvolkov/TestingWeb/raw/main/app-order.jar
+          nohup java -jar artifacts/app-order.jar > app.log 2>&1 &
+          sleep 15
+
+      - name: Run tests
+        run: ./gradlew test --tests "ru.netology.web.CardOrderTest" --info
